@@ -1,6 +1,7 @@
 var A = function(selector, context) {
     //如果selector是一个函数则执行window.onload
     if(typeof selector === 'function') {
+        console.log(1);
         A(window).on('load', selector);
     }else {
         // 创建新对象
@@ -72,5 +73,34 @@ var _on = (function() {
         }
     }
 })()
+
+A.extend = A.fn.extend = function() {
+    var i = 1,
+        len = arguments.length,
+        target = arguments[0],
+        j;
+    // 如果一个参数，则为当前对象扩展方法
+    if (i == len) {
+        target = this;
+        i --;
+    }
+    for(; i < len;i ++) {
+        for (j in arguments[i]) {
+            target[j] = arguments[i][j];
+        }
+    }
+
+    return target;
+}
+
+A.fn.extend({
+    on : function(type, fn, data) {
+        var i = this.length;
+        for(;--i>=0;) {
+            _on(this[i], type, fn, data)
+        }
+        return this;
+    }
+})
 
 

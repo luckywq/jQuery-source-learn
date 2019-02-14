@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="js/jquery.js"></script>
+    <script>
+       A(function () {
+           console.log(1);
+           console.log(A('#test'))
+       })
+     </script>
 </head>
 <body>
     <div id="test">
@@ -12,14 +19,6 @@
     </div>
     <div></div>
         <div class="wangqi"></div>
-    <script src="js/jquery.js"></script>
-    <script>
-       var a = A('#test');
-       console.log(a);
-       var as = A('div');
-       console.log(as);
-       var wq = A('.wangqi')
-       console.log(wq);
-    </script>
+    
 </body>
 </html>
