@@ -1,7 +1,6 @@
 var A = function(selector, context) {
     //如果selector是一个函数则执行window.onload
     if(typeof selector === 'function') {
-        console.log(1);
         A(window).on('load', selector);
     }else {
         // 创建新对象
@@ -63,16 +62,28 @@ A.fn = A.prototype = {
 
 A.fn.init.prototype = A.fn;
 
-
-var _on = (function() {
-    if(document.addEventListener) {
-        return function(dom, type, fn, data) {
-            dom.addEventListener(type, function(e) {
-                fn.call(dom,e,data);
-            }, false)
+// 兼容方法
+var compatibleLib = {
+    _on: (function() {
+        if(document.addEventListener) {
+            return function(dom, type, fn, data) {
+                dom.addEventListener(type, function(e) {
+                    fn.call(dom, e, data);
+                }, false)
+            }
+        } else if (document.attachEvent) {
+            return function(dom, type, fn, data) {
+                dom.attachEvent('on' + type, function(e) {
+                    fn.call(dom, e, data);
+                })
+            }()
         }
-    }
-})()
+    })(),
+    _getStyle : function(el, key) {
+        return el.currentStyle ? el.currentStyle[key] : getComputedStyle(el, false)[key];
+     }
+    
+}
 
 A.extend = A.fn.extend = function() {
     var i = 1,
@@ -93,11 +104,49 @@ A.extend = A.fn.extend = function() {
     return target;
 }
 
+A.extend({
+    // aa-bb  转转为aaBb
+    camelCase: function(str) {
+        return str.replace(/\-(\w)/g, function(letter){
+            return letter.toUpperCase();
+        })
+    }
+})
+
 A.fn.extend({
     on : function(type, fn, data) {
         var i = this.length;
         for(;--i>=0;) {
-            _on(this[i], type, fn, data)
+            compatibleLib._on(this[i], type, fn, data)
+        }
+        return this;
+    },
+    css: function() {
+        var arg = arguments,
+            len = arguments.length;
+        if (this.length < 1) {
+            return this;
+        }
+        var i = this.length - 1;
+        // 一个参数: string--获取对应属性值；object--设置key的值为value
+        if(len === 1) {
+            // return _getStyle(this[0], arg[0]);
+            if(typeof arg[0] === "string") {
+                return compatibleLib._getStyle(this[0], arg[0]);
+            } else if(typeof arg[0] === "object") {
+                
+                for(var keyName in arg[0]) {
+                    for(;i >=0;i --) {
+                        this[i].style[A.camelCase(keyName)] = arg[0][keyName];
+                    }
+                }
+            }
+        }else if(len === 2) {
+            for(;i >= 0;i --) {
+                this[i].style[A.camelCase(arg[0])] = arg[1];
+            }
+        }else {
+            throw new Error('Parameter error')
         }
         return this;
     }

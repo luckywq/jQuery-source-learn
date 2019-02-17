@@ -5,20 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #test{
+            width: 100px;
+            height: 100px;
+            background: cyan;
+            text-align: center;
+            line-height: 100px;
+            font-size: 20px;
+        }
+    </style>
     <script src="js/jquery.js"></script>
     <script>
        A(function () {
-           console.log(1);
-           console.log(A('#test'))
+            var flag = false;
+           A('#test').on('click', function(e) {
+                // console.log(e);
+                console.log(A(this).css('width'))
+                
+                flag = !flag
+                A(this).css('backgroundColor', '#000').css({
+                    color: flag ? 'red' : '#fff', 
+                })
+           })
        })
      </script>
 </head>
 <body>
     <div id="test">
-        
+        1111
     </div>
     <div></div>
-        <div class="wangqi"></div>
+    <div class="wangqi"></div>
     
 </body>
 </html>
