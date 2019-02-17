@@ -81,7 +81,7 @@ var compatibleLib = {
     })(),
     _getStyle : function(el, key) {
         return el.currentStyle ? el.currentStyle[key] : getComputedStyle(el, false)[key];
-     }
+    }
     
 }
 
@@ -110,6 +110,9 @@ A.extend({
         return str.replace(/\-(\w)/g, function(letter){
             return letter.toUpperCase();
         })
+    },
+    trim: function(str) {
+        return str.replace(/^\s+|\\s+$/, '')
     }
 })
 
@@ -149,7 +152,93 @@ A.fn.extend({
             throw new Error('Parameter error')
         }
         return this;
+    },
+    html: function() {
+        var arg = arguments,
+            len = arguments.length,
+            domLen = this.length,
+            i = domLen - 1;
+        if(domLen < 1) {
+            return this;
+        }
+        if(len === 0) {
+            return this[0].innerHTML;
+        }else if(len === 1) {
+            for(;i >= 0;i --) {
+                this[i].innerHTML = arg[0];
+            }
+        }else if(len === 2 && arg[1]) {
+            for(;i >= 0;i --) {
+                this[i].innerHTML += arg[0];
+            }
+        }
+        return this;
+    },
+    hasClass: function(val) {
+        if(!this[0]){
+            return
+        }
+        var value = A.trim(val);
+        return this[0].className && this[0].className.indexOf(value) >= 0 ? true : false;
+    },
+    addClass: function(val) {
+        var value = A.trim(val),
+            str = '';
+        for(var i = 0;i < this.length; i++) {
+            str = this[i].className;
+            if(!~str.indexOf(value)) {
+                this[i].className += ' ' + value;
+            }
+        }
+        return this;
+    },
+    removeClass: function(val) {
+        var value = A.trim(val),
+        classNameArr,
+            result;
+        for(var i = 0;i < this.length;i ++) {
+            if(this[i].className && ~this[i].className.indexOf(value)) {
+                classNameArr = this[i].className.split(' ');
+                result = '';
+
+                for(var j = classNameArr.length - 1;j >=0; j --) {
+                    classNameArr[j] = A.trim(classNameArr[j]);
+                    result += classNameArr[j] && classNameArr[j] !== value ? ' ' + classNameArr[j] : '';
+                } 
+                this[i].className = result;
+            }
+        }
+        return this;
+    },
+
+    toggleClass: function() {
+        // console.log(this)
+        if (this.length < 1) {
+            return
+        }
+        var arg = arguments,
+            value = '';
+        if(arg.length === 1) {
+            value = A.trim(arg[0]);
+            for(var i = 0;i < this.length;i ++) {
+                
+                if(this[i].className && ~this[i].className.indexOf(value)) {
+                    var classArr = [];
+                    var res = '';
+                    classArr = this[i].className.split(' ');
+                    for(var j = classArr.length - 1;j >= 0;j --) {
+                        classArr[j] = A.trim(classArr[j]);
+                        res += classArr[j] && classArr[j] !== value ? ' ' + classArr[j] : '';
+                    }
+                    this[i].className = A.trim(res);
+                }else {
+                    this[i].className += ' ' + A.trim(value);
+                }
+            }
+        }
+        return this;
     }
+         
 })
 
 
