@@ -42,6 +42,7 @@ A.fn = A.prototype = {
                 }
             }
         }
+        // tagname
         else {
             var doms = context.getElementsByTagName(selector),
                 i = 0,
@@ -107,7 +108,7 @@ A.extend = A.fn.extend = function() {
 A.extend({
     // aa-bb  转转为aaBb
     camelCase: function(str) {
-        return str.replace(/\-(\w)/g, function(letter){
+        return str.replace(/\-(\w)/g, function(match, letter){
             return letter.toUpperCase();
         })
     },
@@ -137,7 +138,6 @@ A.fn.extend({
             if(typeof arg[0] === "string") {
                 return compatibleLib._getStyle(this[0], arg[0]);
             } else if(typeof arg[0] === "object") {
-                
                 for(var keyName in arg[0]) {
                     for(;i >=0;i --) {
                         this[i].style[A.camelCase(keyName)] = arg[0][keyName];
@@ -176,7 +176,7 @@ A.fn.extend({
     },
     hasClass: function(val) {
         if(!this[0]){
-            return
+            return;
         }
         var value = A.trim(val);
         return this[0].className && this[0].className.indexOf(value) >= 0 ? true : false;
@@ -204,7 +204,7 @@ A.fn.extend({
                 for(var j = classNameArr.length - 1;j >=0; j --) {
                     classNameArr[j] = A.trim(classNameArr[j]);
                     result += classNameArr[j] && classNameArr[j] !== value ? ' ' + classNameArr[j] : '';
-                } 
+                }
                 this[i].className = result;
             }
         }
@@ -221,7 +221,7 @@ A.fn.extend({
         if(arg.length === 1) {
             value = A.trim(arg[0]);
             for(var i = 0;i < this.length;i ++) {
-                
+
                 if(this[i].className && ~this[i].className.indexOf(value)) {
                     var classArr = [];
                     var res = '';
@@ -237,8 +237,23 @@ A.fn.extend({
             }
         }
         return this;
+    },
+
+    get: function(index) {
+        if(typeof index !== 'number') {
+            throw new Error('Parameter error')
+        }else {
+            return this[index];
+        }
+    },
+
+    eq: function (index) {
+        if(typeof index !== 'number') {
+            throw new Error('Parameter error')
+        }else {
+            return A(this[index]);
+        }
     }
-         
 })
 
 

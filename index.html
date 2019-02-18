@@ -19,7 +19,7 @@
             font-size: 20px;
         }
 
-        .wangqi{
+        .wangqi2{
             width: 100px;
             height: 100px;
             background: cyan;
@@ -30,24 +30,27 @@
             font-size: 0;
             margin-top: 20px;
         }
-        .wangqi > span{
+        .wangqi2 > span{
             font-size: 15px
         }
     </style>
     <script src="js/jquery.js"></script>
     <script>
-       A(function (obj) {
+       A(function () {
             var flag = false;
            A('#test').on('click', function(e) {
                 // console.log(e);
-                console.log(A(this).css('width'),A(this).hasClass('cls1'),A(this).hasClass('cls10'))
-                
+                console.log(A(this).css('width'),A(this).hasClass('cls1'),A(this).hasClass('cls10'),A(this).get(0))
+                A(this).get(0).style.margin = '20px'
                 flag = !flag
-                A(this).css('backgroundColor', '#000').css({
-                    color: flag ? 'red' : '#fff', 
+                A(this).css('background-color', '#000').css({
+                    color: flag ? 'red' : '#fff',
                 }).html('dsa').html('dsa', true).addClass('cls4').removeClass('cls2')
            })
-        //    A('.wangqi').toggleClass('wangqi2').toggleClass('wangqi')
+           A('.wangqi').toggleClass('wangqi2').toggleClass('wangqi').eq(0).css('color', 'red')
+
+           var div1 = document.getElementById('test');
+           A(div1).html("dsads");
        })
      </script>
 </head>
