@@ -83,7 +83,7 @@ var compatibleLib = {
     _getStyle : function(el, key) {
         return el.currentStyle ? el.currentStyle[key] : getComputedStyle(el, false)[key];
     }
-    
+
 }
 
 A.extend = A.fn.extend = function() {
@@ -106,7 +106,7 @@ A.extend = A.fn.extend = function() {
 }
 
 A.extend({
-    // aa-bb  转转为aaBb
+    // aa-bb  转为aaBb
     camelCase: function(str) {
         return str.replace(/\-(\w)/g, function(match, letter){
             return letter.toUpperCase();
@@ -253,7 +253,29 @@ A.fn.extend({
         }else {
             return A(this[index]);
         }
+    },
+
+    attr: function() {
+        var arg = arguments,
+            len = arg.length;
+        if(this.length < 1) {
+            return this;
+        }
+        if(len === 1) {
+            if(typeof arg[0] === 'string') {
+                return this[0].getAttribute(arg[0])
+            }else if(typeof arg[0] === 'object') {
+                for(var i in arg[0]) {
+                    for(var j = this.length - 1;j >=0;j --) {
+                        this[j].setAttribute(i, arg[0][i]);
+                    }
+                }
+            }
+        }else if(len === 2) {
+            for(var j = this.length - 1;j >=0;j --) {
+                this[j].setAttribute(arg[0], arg[1])
+            }
+        }
+        return this;
     }
 })
-
-
