@@ -48,6 +48,35 @@
         old[3].names += '666'
         console.log(old);
         console.log(news);
+
+
+        function New(func) {
+            var res = new Object();
+            if (func.prototype !== null) {
+                res.__proto__ = func.prototype;
+            }
+            var ret = func.call(res, [...arguments].slice(1));
+            if ((typeof ret === "object" || typeof ret === "function") && ret !== null) {
+                return ret;
+            }
+            return res;
+        }
+
+        function Wangqi(a,b) {
+            console.log(a,b)
+            this.a = a;
+            this.getA()
+        }
+
+        Wangqi.prototype.getA = function(){
+            console.log(11)
+            return this.a;
+        }
+        var obj = New(Wangqi, 1, 2);
+        // equals to
+        var obj2 = new Wangqi(1, 2);
+
+
     </script>
 </body>
 </html>

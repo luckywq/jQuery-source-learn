@@ -279,3 +279,32 @@ A.fn.extend({
         return this;
     }
 })
+
+
+var Tween = {
+    timer: 0,
+    queen: [],
+    interval: 16,
+    easing: {
+        def: function (time, startValue, changeValue, duration) {
+            return changeValue * time / duration + startValue;
+        },
+        easeOutQuart: function (time, startValue, changeValue, duration) {
+            return -changeValue * ((time = time / duration - 1) * time * time * time - 1) + startValue;
+        },
+        // 添加运动成员
+        add: function(instance) {
+            this.queen.push(instance);
+        },
+        clear:function() {
+            clearInterval(this.timer)
+            this.timer - 0
+        },
+        run: function() {
+
+        },
+        loop: function() {
+            
+        }
+    }
+}
